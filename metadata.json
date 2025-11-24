@@ -1,0 +1,5 @@
+{
+  "name": "AI Image Analysis Experiment",
+  "description": "A computer vision tool to visualize image gradient fields and detect potential AI-generation artifacts using noise pattern analysis.",
+  "requestFramePermissions": []
+}
