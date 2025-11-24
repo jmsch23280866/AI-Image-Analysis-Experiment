@@ -1,12 +1,12 @@
-
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { translations } from './translations.js';
 import { computeGradientField, getImageData } from './imageProcessor.js';
 import { IconUpload, IconDemoReal, IconDemoAI, IconLanguage, IconEmpty, InfoPanel } from './components.js';
 
-const { useState, useRef, useEffect, useCallback, createElement: h } = React;
+const { createElement: h } = React;
 
 const REAL_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
-const AI_IMAGE_URL = "https://upload.cc/i1/2025/11/24/QXpPwL.png";
+const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/refs/heads/main/Gemini_Generated_F-22(Demo).png";
 
 export const App = () => {
   const [imageSrc, setImageSrc] = useState(null);
