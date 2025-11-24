@@ -195,7 +195,7 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center font-bold text-lg text-white">
-              F
+              🛦
             </div>
             <h1 className="text-xl font-bold tracking-tight">{t.title}</h1>
           </div>
