@@ -4,7 +4,7 @@ import { translations, Language } from './utils/translations';
 import InfoPanel from './components/InfoPanel';
 
 const REAL_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
-const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/refs/heads/main/Gemini_Generated_F-22(Demo).png";
+const AI_IMAGE_URL = "https://upload.cc/i1/2025/11/24/QXpPwL.png";
 
 const App: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
