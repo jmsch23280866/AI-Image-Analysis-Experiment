@@ -1,4 +1,4 @@
-// Destructure React globals
+// Destructure React globals from the UMD build
 const { useState, useRef, useEffect, useCallback, createElement: h } = React;
 const { createRoot } = ReactDOM;
 
