@@ -1,59 +1,40 @@
-# AI Image Analysis Experiment (Vanilla JS Edition)
+# AI Image Analysis Experiment
 
-這是一個基於瀏覽器的電腦視覺工具，用於可視化圖像中的梯度場（Gradient Fields），藉此分析潛在的 AI 生成偽影（Artifacts）。
+此專案是一個基於瀏覽器的電腦視覺實驗工具，旨在透過數學運算將圖像中肉眼難以察覺的微觀紋理可視化，藉此分析潛在的 AI 生成特徵。
 
-此版本經過重構，**完全不需要構建工具（No Build Step）**。它使用原生的 JavaScript (ES6) 配合 React (UMD) 運行，無需 `npm`、`webpack` 或 `vite`。
+👉 **線上體驗 (Live Demo)**: [https://jmsch23280866.github.io/AI-Image-Analysis-Experiment/](https://jmsch23280866.github.io/AI-Image-Analysis-Experiment/)
 
-## ✨ 功能特色
+---
 
-*   **梯度浮雕可視化 (Gradient Relief)**：利用 Sobel 算子計算圖像梯度，並以中性灰為基底進行偏移顯示。
-*   **統計分析**：計算梯度場的協方差矩陣 (Covariance Matrix)，幫助識別非自然的噪聲分佈。
-*   **隱私安全**：所有圖像處理皆在**本地瀏覽器**中完成，圖片不會上傳至任何伺服器。
-*   **零依賴運行**：單純的靜態網頁，雙擊 `index.html` 即可使用。
+## 🔍 背後原理 (Underlying Principles)
 
-## 🚀 如何執行
+AI 生成圖像（特別是基於 Diffusion Model 的模型）雖然在宏觀上逼真，但在微觀的高頻細節上，往往會殘留與自然光學攝影不同的噪聲特徵。本工具利用**梯度浮雕 (Gradient Relief)** 技術來突顯這些差異。
 
-由於此專案已移除編譯需求，您有兩種方式可以執行：
+### 1. 亮度轉換 (Luminance)
+首先，程式會將 RGB 圖像轉換為單通道的灰階亮度值，以專注於光影結構而非顏色：
+$$ L = 0.2126R + 0.7152G + 0.0722B $$
 
-### 方法 1：直接開啟 (最簡單)
-直接在資料夾中找到 `index.html`，雙擊使用瀏覽器開啟即可。
+### 2. 梯度場計算 (Gradient Calculation)
+接著，使用 **Sobel 算子 (Sobel Operator)** 對圖像進行卷積運算，計算每個像素在水平 ($G_x$) 與垂直 ($G_y$) 方向的變化率（梯度）。
+這在本質上是一種**高通濾波 (High-pass Filter)**，能夠去除低頻的平滑顏色，只保留邊緣與紋理資訊。
 
-### 方法 2：使用靜態伺服器 (推薦)
-雖然可以直接開啟，但為了避免某些瀏覽器的嚴格 CORS (跨域) 限制影響圖片載入，建議使用簡易的 HTTP 伺服器：
+### 3. 視覺化映射 (Visualization)
+為了讓人眼能夠同時觀察到正向與負向的梯度變化，我們將計算結果疊加在中性灰基底上：
 
-```bash
-# 如果你有安裝 python
-python3 -m http.server 8000
+$$ Pixel = (G_x + G_y) \times \text{Gain} + 128 $$
 
-# 或者使用 node
-npx serve .
-```
-然後在瀏覽器訪問 `http://localhost:8000`。
+*   **中性灰 (128)**：代表梯度為 0，即平坦區域。
+*   **亮/暗細節**：代表該處存在快速的亮度變化。
 
-## 📂 專案結構
+**分析邏輯**：
+*   **自然照片**：在失焦或平坦區域（如藍天），通常呈現平滑的灰色，或帶有隨機的 ISO 顆粒噪點。
+*   **AI 圖像**：常在平坦背景中殘留異常的**高頻靜電狀噪聲**、**重複性紋理**或**棋盤格偽影 (Checkerboard Artifacts)**。透過調整增益 (Gain)，這些潛藏的特徵會浮現於灰色背景之上。
 
-此專案僅由 4 個核心檔案組成：
+### 4. 統計分析 (Covariance Matrix)
+為了提供客觀數據，工具會計算梯度場的協方差矩陣：
+$$ C = \frac{1}{N} \sum (G - \bar{G})(G - \bar{G})^T $$
+這能反映出圖像在紋理層面的統計分佈特性。
 
-1.  **`index.html`**
-    *   網頁入口。
-    *   透過 CDN 引入 React, ReactDOM 和 TailwindCSS。
-    *   不包含任何編譯器 (Babel) 引用。
-2.  **`main.js`**
-    *   包含所有邏輯：UI 組件、電腦視覺算法、多語言翻譯。
-    *   使用 `React.createElement` (別名 `h`) 代替 JSX，讓瀏覽器能直接執行。
-3.  **`style.css`**
-    *   自定義樣式與滾動條美化。
-4.  **`README.md`**
-    *   本說明文件。
+---
 
-## 🛠️ 技術細節
-
-*   **Framework**: React 18 (UMD Version)
-*   **Styling**: Tailwind CSS (Runtime CDN)
-*   **Algorithm**: Sobel Operator for Gradient calculation (Implemented in pure JS).
-*   **Architecture**: Single File Component (SFC) pattern merged into one JS file for portability.
-
-## 📝 授權與致謝
-
-本工具靈感來自 RogerBit arduino pic y más 的文章。
-程式碼為開源實驗專案。
+*本工具僅供實驗研究用途。靈感來源：RogerBit arduino pic y más。*
