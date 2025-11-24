@@ -9,7 +9,8 @@ const translations = {
   'zh-TW': {
     title: "AI 圖像分析實驗",
     uploadBtn: "上傳圖片",
-    demoBtn: "示範",
+    demoRealBtn: "示範 (真實)",
+    demoAIBtn: "示範 (AI)",
     urlPlaceholder: "輸入圖片網址...",
     loadUrlBtn: "載入",
     orLabel: "或",
@@ -38,7 +39,8 @@ const translations = {
   'en': {
     title: "AI Image Analysis Experiment",
     uploadBtn: "Upload Image",
-    demoBtn: "Demo",
+    demoRealBtn: "Demo (Real)",
+    demoAIBtn: "Demo (AI)",
     urlPlaceholder: "Enter image URL...",
     loadUrlBtn: "Load",
     orLabel: "or",
@@ -67,7 +69,8 @@ const translations = {
   'fr': {
     title: "Expérience d'Analyse d'Image IA",
     uploadBtn: "Télécharger une image",
-    demoBtn: "Démo",
+    demoRealBtn: "Démo (Réelle)",
+    demoAIBtn: "Démo (IA)",
     urlPlaceholder: "Entrez l'URL de l'image...",
     loadUrlBtn: "Charger",
     orLabel: "ou",
@@ -217,9 +220,12 @@ const IconUpload = () => h('svg', { className: "w-5 h-5", fill: "none", stroke: 
   h('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" })
 );
 
-const IconDemo = () => h('svg', { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-  h('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" }),
-  h('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M21 12a9 9 0 11-18 0 9 9 0 0118 0z" })
+const IconDemoReal = () => h('svg', { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
+  h('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" })
+);
+
+const IconDemoAI = () => h('svg', { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
+  h('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" })
 );
 
 const IconLanguage = () => h('svg', { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
@@ -256,7 +262,8 @@ const InfoPanel = ({ t }) => {
 // ==========================================
 // MAIN APP
 // ==========================================
-const DEMO_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
+const REAL_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
+const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/refs/heads/main/Gemini_Generated_F-22(Demo).png";
 
 const App = () => {
   const [imageSrc, setImageSrc] = useState(null);
@@ -304,6 +311,8 @@ const App = () => {
       };
       reader.readAsDataURL(file);
     }
+    // Reset value to allow selecting the same file again
+    e.target.value = '';
   };
 
   // Handle URL Load
@@ -314,9 +323,14 @@ const App = () => {
   };
 
   // Handle Demo Load
-  const handleDemoLoad = () => {
-    setImageUrlInput(DEMO_IMAGE_URL);
-    handleImageLoad(DEMO_IMAGE_URL);
+  const handleRealDemoLoad = () => {
+    setImageUrlInput(REAL_IMAGE_URL);
+    handleImageLoad(REAL_IMAGE_URL);
+  };
+
+  const handleAIDemoLoad = () => {
+    setImageUrlInput(AI_IMAGE_URL);
+    handleImageLoad(AI_IMAGE_URL);
   };
 
   // Handle Paste
@@ -490,12 +504,23 @@ const App = () => {
               )
             ),
             h('span', { className: "text-gray-500 text-sm" }, t.orLabel),
-            h('button', {
-              onClick: handleDemoLoad,
-              className: "bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-gray-600"
-            },
-              h(IconDemo),
-              t.demoBtn
+            h('div', { className: "flex gap-2" },
+              h('button', {
+                onClick: handleRealDemoLoad,
+                title: "Real Photo",
+                className: "bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-gray-600"
+              },
+                h(IconDemoReal),
+                t.demoRealBtn
+              ),
+              h('button', {
+                onClick: handleAIDemoLoad,
+                title: "AI Generated",
+                className: "bg-indigo-900/50 hover:bg-indigo-800/50 text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-indigo-700/50"
+              },
+                h(IconDemoAI),
+                t.demoAIBtn
+              )
             )
           ),
           /* URL Input */

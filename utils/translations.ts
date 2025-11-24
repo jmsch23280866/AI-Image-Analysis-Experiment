@@ -3,7 +3,8 @@ export type Language = 'zh-TW' | 'en' | 'fr';
 export interface Translation {
   title: string;
   uploadBtn: string;
-  demoBtn: string;
+  demoRealBtn: string;
+  demoAIBtn: string;
   urlPlaceholder: string;
   loadUrlBtn: string;
   orLabel: string;
@@ -34,7 +35,8 @@ export const translations: Record<Language, Translation> = {
   'zh-TW': {
     title: "AI 圖像分析實驗",
     uploadBtn: "上傳圖片",
-    demoBtn: "示範",
+    demoRealBtn: "示範 (真實)",
+    demoAIBtn: "示範 (AI)",
     urlPlaceholder: "輸入圖片網址...",
     loadUrlBtn: "載入",
     orLabel: "或",
@@ -63,7 +65,8 @@ export const translations: Record<Language, Translation> = {
   'en': {
     title: "AI Image Analysis Experiment",
     uploadBtn: "Upload Image",
-    demoBtn: "Demo",
+    demoRealBtn: "Demo (Real)",
+    demoAIBtn: "Demo (AI)",
     urlPlaceholder: "Enter image URL...",
     loadUrlBtn: "Load",
     orLabel: "or",
@@ -92,7 +95,8 @@ export const translations: Record<Language, Translation> = {
   'fr': {
     title: "Expérience d'Analyse d'Image IA",
     uploadBtn: "Télécharger une image",
-    demoBtn: "Démo",
+    demoRealBtn: "Démo (Réelle)",
+    demoAIBtn: "Démo (IA)",
     urlPlaceholder: "Entrez l'URL de l'image...",
     loadUrlBtn: "Charger",
     orLabel: "ou",

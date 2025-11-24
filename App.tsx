@@ -3,7 +3,8 @@ import { computeGradientField, getImageData, ProcessResult } from './utils/image
 import { translations, Language } from './utils/translations';
 import InfoPanel from './components/InfoPanel';
 
-const DEMO_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
+const REAL_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
+const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/refs/heads/main/Gemini_Generated_F-22(Demo).png";
 
 const App: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -51,6 +52,8 @@ const App: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
+    // Reset value to allow selecting the same file again
+    e.target.value = '';
   };
 
   // Handle URL Load
@@ -60,10 +63,15 @@ const App: React.FC = () => {
     }
   };
 
-  // Handle Demo Load
-  const handleDemoLoad = () => {
-    setImageUrlInput(DEMO_IMAGE_URL);
-    handleImageLoad(DEMO_IMAGE_URL);
+  // Handle Demo Loads
+  const handleRealDemoLoad = () => {
+    setImageUrlInput(REAL_IMAGE_URL);
+    handleImageLoad(REAL_IMAGE_URL);
+  };
+
+  const handleAIDemoLoad = () => {
+    setImageUrlInput(AI_IMAGE_URL);
+    handleImageLoad(AI_IMAGE_URL);
   };
 
   // Handle Paste
@@ -229,7 +237,7 @@ const App: React.FC = () => {
               )}
             </div>
             
-            <span className="text-sm text-gray-500">v1.2.0</span>
+            <span className="text-sm text-gray-500">v1.3.0</span>
           </div>
         </div>
       </header>
@@ -266,13 +274,25 @@ const App: React.FC = () => {
 
               <span className="text-gray-500 text-sm">{t.orLabel}</span>
 
-              <button 
-                onClick={handleDemoLoad}
-                className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-gray-600"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                {t.demoBtn}
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={handleRealDemoLoad}
+                  className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-gray-600"
+                  title="Real Photo"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  {t.demoRealBtn}
+                </button>
+
+                <button 
+                  onClick={handleAIDemoLoad}
+                  className="bg-indigo-900/50 hover:bg-indigo-800/50 text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm border border-indigo-700/50"
+                  title="AI Generated"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                  {t.demoAIBtn}
+                </button>
+              </div>
             </div>
 
             {/* URL Input Row */}
