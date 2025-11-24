@@ -6,7 +6,7 @@ import { IconUpload, IconDemoReal, IconDemoAI, IconLanguage, IconEmpty, InfoPane
 const { useState, useRef, useEffect, useCallback, createElement: h } = React;
 
 const REAL_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/F-35A_flight_%28cropped%29.jpg/1280px-F-35A_flight_%28cropped%29.jpg";
-const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/refs/heads/main/Gemini_Generated_F-22(Demo).png";
+const AI_IMAGE_URL = "https://raw.githubusercontent.com/jmsch23280866/AI-Image-Analysis-Experiment/cdaed9396bb1036cf08f3de676feee39962642e6/Gemini_Generated_F-22(Demo).png";
 
 export const App = () => {
   const [imageSrc, setImageSrc] = useState(null);
