@@ -12,16 +12,16 @@ AI 生成圖像（特別是基於 Diffusion Model 的模型）雖然在宏觀上
 
 ### 1. 亮度轉換 (Luminance)
 首先，程式會將 RGB 圖像轉換為單通道的灰階亮度值，以專注於光影結構而非顏色：
-$$ L = 0.2126R + 0.7152G + 0.0722B $$
+L = 0.2126R + 0.7152G + 0.0722B
 
 ### 2. 梯度場計算 (Gradient Calculation)
-接著，使用 **Sobel 算子 (Sobel Operator)** 對圖像進行卷積運算，計算每個像素在水平 ($G_x$) 與垂直 ($G_y$) 方向的變化率（梯度）。
+接著，使用 **Sobel 算子 (Sobel Operator)** 對圖像進行卷積運算，計算每個像素在水平 (G_x) 與垂直 (G_y) 方向的變化率（梯度）。
 這在本質上是一種**高通濾波 (High-pass Filter)**，能夠去除低頻的平滑顏色，只保留邊緣與紋理資訊。
 
 ### 3. 視覺化映射 (Visualization)
 為了讓人眼能夠同時觀察到正向與負向的梯度變化，我們將計算結果疊加在中性灰基底上：
 
-$$ Pixel = (G_x + G_y) \times \text{Gain} + 128 $$
+Pixel = (G_x + G_y) \times \text{Gain} + 128
 
 *   **中性灰 (128)**：代表梯度為 0，即平坦區域。
 *   **亮/暗細節**：代表該處存在快速的亮度變化。
@@ -32,7 +32,7 @@ $$ Pixel = (G_x + G_y) \times \text{Gain} + 128 $$
 
 ### 4. 統計分析 (Covariance Matrix)
 為了提供客觀數據，工具會計算梯度場的協方差矩陣：
-$$ C = \frac{1}{N} \sum (G - \bar{G})(G - \bar{G})^T $$
+C = \frac{1}{N} \sum (G - \bar{G})(G - \bar{G})^T
 這能反映出圖像在紋理層面的統計分佈特性。
 
 ---
